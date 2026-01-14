@@ -1,8 +1,17 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { TasksService } from "./tasks.service";
 import { TasksResponseDto } from "./dto/tasks-response.dto";
 import { CreateTaskDto } from "./dto/create-task.dto";
+import { UpdateTaskDto } from "./dto/update-task.dto";
 
 @ApiTags("tasks")
 @Controller("projects/:projectId/tasks")
@@ -40,5 +49,29 @@ export class TasksController {
     @Body() createTaskDto: CreateTaskDto
   ): Promise<TasksResponseDto> {
     return this.tasksService.create(projectId, createTaskDto);
+  }
+
+  @Put(":taskId")
+  @ApiOperation({ summary: "Обновить задачу" })
+  @ApiResponse({
+    status: 200,
+    description: "Задача обновлена",
+    type: TasksResponseDto,
+  })
+  update(
+    @Param("taskId") taskId: string,
+    @Body() updateTaskDto: UpdateTaskDto
+  ): Promise<TasksResponseDto> {
+    return this.tasksService.update(taskId, updateTaskDto);
+  }
+
+  @Delete(":taskId")
+  @ApiOperation({ summary: "Удалить задачу" })
+  @ApiResponse({
+    status: 200,
+    description: "Задача удалена",
+  })
+  delete(@Param("taskId") taskId: string): Promise<void> {
+    return this.tasksService.delete(taskId);
   }
 }
