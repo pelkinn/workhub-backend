@@ -18,6 +18,7 @@ import { RegisterDto } from "./dto/register.dto";
 import { LoginDto } from "./dto/login.dto";
 import { AuthResponseDto } from "./dto/auth-response.dto";
 import { UserResponseDto } from "./dto/user-response.dto";
+import { JwtUserDto } from "./dto/jwt-user.dto";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { CurrentUser } from "./decorators/current-user.decorator";
 import { RegisterResponseDto } from "./dto/register-response.dto";
@@ -66,7 +67,8 @@ export class AuthController {
     type: UserResponseDto,
   })
   @ApiResponse({ status: 401, description: "Не авторизован" })
-  getMe(@CurrentUser() user: UserResponseDto): UserResponseDto {
-    return user;
+  async getMe(@CurrentUser() user: JwtUserDto): Promise<UserResponseDto> {
+    console.log(user);
+    return this.authService.getMe(user.userId);
   }
 }

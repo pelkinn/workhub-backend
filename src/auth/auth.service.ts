@@ -104,4 +104,25 @@ export class AuthService {
 
     return user;
   }
+
+  async getMe(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException("Пользователь не найден");
+    }
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+    };
+  }
 }
