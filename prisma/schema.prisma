@@ -68,13 +68,14 @@ model AuditLog {
 }
 
 model Invitation {
-  id        String   @id @default(cuid())
+  id        String         @id @default(cuid())
   token     String
   email     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
   projectId String
-  project   Project  @relation(fields: [projectId], references: [id])
+  project   Project        @relation(fields: [projectId], references: [id])
+  role      MembershipRole
 }
 
 enum AuditLogAction {

@@ -6,15 +6,27 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiBearerAuth,
+} from "@nestjs/swagger";
 import { TasksService } from "./tasks.service";
 import { TasksResponseDto } from "./dto/tasks-response.dto";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { UpdateTaskDto } from "./dto/update-task.dto";
+import { JwtAuthGuard } from "@/auth/guards/jwt-auth.guard";
+import { MembershipsGuard } from "@/memberships/guards/memberships.guard";
+import { RequireRole } from "@/memberships/guards/require-role.decorator";
+import { MembershipRole } from "@prisma/client";
 
 @ApiTags("tasks")
+@ApiBearerAuth()
 @Controller("projects/:projectId/tasks")
+@UseGuards(JwtAuthGuard)
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
@@ -33,6 +45,8 @@ export class TasksController {
     return this.tasksService.findAll(projectId);
   }
 
+  @UseGuards(MembershipsGuard)
+  @RequireRole(MembershipRole.EDITOR)
   @Post()
   @ApiOperation({ summary: "Создать задачу в проекте" })
   @ApiResponse({
@@ -51,6 +65,8 @@ export class TasksController {
     return this.tasksService.create(projectId, createTaskDto);
   }
 
+  @UseGuards(MembershipsGuard)
+  @RequireRole(MembershipRole.EDITOR)
   @Put(":taskId")
   @ApiOperation({ summary: "Обновить задачу" })
   @ApiResponse({
@@ -65,6 +81,8 @@ export class TasksController {
     return this.tasksService.update(taskId, updateTaskDto);
   }
 
+  @UseGuards(MembershipsGuard)
+  @RequireRole(MembershipRole.EDITOR)
   @Delete(":taskId")
   @ApiOperation({ summary: "Удалить задачу" })
   @ApiResponse({

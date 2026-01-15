@@ -92,4 +92,8 @@ export class ProjectService {
 
     return project;
   }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.project.delete({ where: { id } });
+  }
 }
