@@ -27,7 +27,7 @@ export class MembershipsGuard implements CanActivate {
     }
 
     // Получаем projectId из параметров маршрута
-    const projectId = request.params.projectId;
+    const projectId = request.params.projectId || request.params.id;
     if (!projectId) {
       throw new NotFoundException("Project ID не указан");
     }
@@ -54,25 +54,35 @@ export class MembershipsGuard implements CanActivate {
     }
 
     // Проверяем роль, если указана через декоратор @RequireRole
-    const requiredRole = this.reflector.get<MembershipRole>(
+    const requiredRole = this.reflector.get<MembershipRole | MembershipRole[]>(
       REQUIRE_ROLE_KEY,
       context.getHandler()
     );
 
     if (requiredRole) {
-      const roleHierarchy: Record<MembershipRole, number> = {
-        [MembershipRole.VIEWER]: 1,
-        [MembershipRole.EDITOR]: 2,
-        [MembershipRole.OWNER]: 3,
-      };
+      if (Array.isArray(requiredRole)) {
+        if (!requiredRole.includes(membership.role)) {
+          throw new ForbiddenException(
+            `Требуется одна из ролей: ${requiredRole.join(", ")}, у вас роль ${
+              membership.role
+            }`
+          );
+        }
+      } else {
+        const roleHierarchy: Record<MembershipRole, number> = {
+          [MembershipRole.VIEWER]: 1,
+          [MembershipRole.EDITOR]: 2,
+          [MembershipRole.OWNER]: 3,
+        };
 
-      const userRoleLevel = roleHierarchy[membership.role];
-      const requiredRoleLevel = roleHierarchy[requiredRole];
+        const userRoleLevel = roleHierarchy[membership.role];
+        const requiredRoleLevel = roleHierarchy[requiredRole];
 
-      if (userRoleLevel < requiredRoleLevel) {
-        throw new ForbiddenException(
-          `Требуется роль ${requiredRole}, у вас роль ${membership.role}`
-        );
+        if (userRoleLevel < requiredRoleLevel) {
+          throw new ForbiddenException(
+            `Требуется роль ${requiredRole}, у вас роль ${membership.role}`
+          );
+        }
       }
     }
 

@@ -3,5 +3,5 @@ import { MembershipRole } from "@prisma/client";
 
 export const REQUIRE_ROLE_KEY = "requireRole";
 
-export const RequireRole = (role: MembershipRole) =>
+export const RequireRole = (role: MembershipRole | MembershipRole[]) =>
   SetMetadata(REQUIRE_ROLE_KEY, role);

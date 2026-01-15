@@ -3,6 +3,7 @@ import { CreateProjectDto } from "./dto/create-project.dto";
 import { PrismaService } from "../prisma/prisma.service";
 import { MembershipRole } from "@prisma/client";
 import { ProjectsResponseDto } from "./dto/projects-response.dto";
+import { UserResponseDto } from "@/auth/dto/user-response.dto";
 
 @Injectable()
 export class ProjectService {
@@ -83,17 +84,86 @@ export class ProjectService {
           },
         },
       },
-      include: { memberships: true },
+      include: { memberships: { include: { user: true } } },
     });
 
     if (!project) {
       throw new NotFoundException("Project not found");
     }
 
-    return project;
+    const ownerMembership = project.memberships.find(
+      (membership) => membership.role === MembershipRole.OWNER
+    );
+
+    if (!ownerMembership) {
+      throw new NotFoundException("Project owner not found");
+    }
+
+    return {
+      id: project.id,
+      name: project.name,
+      description: project.description,
+      createdAt: project.createdAt,
+      updatedAt: project.updatedAt,
+      owner: {
+        id: ownerMembership.user.id,
+        email: ownerMembership.user.email,
+        name: ownerMembership.user.name,
+      },
+    };
   }
 
   async delete(id: string): Promise<void> {
-    await this.prisma.project.delete({ where: { id } });
+    // Проверяем существование проекта перед удалением
+    const project = await this.prisma.project.findUnique({
+      where: { id },
+    });
+
+    if (!project) {
+      throw new NotFoundException("Проект не найден");
+    }
+
+    // Удаляем проект и все связанные данные в транзакции
+    // Порядок важен из-за внешних ключей
+    await this.prisma.$transaction(async (tx) => {
+      // Удаляем audit logs, связанные с задачами проекта
+      const tasks = await tx.task.findMany({
+        where: { projectId: id },
+        select: { id: true },
+      });
+
+      const taskIds = tasks.map((task) => task.id);
+
+      if (taskIds.length > 0) {
+        await tx.auditLog.deleteMany({
+          where: { taskId: { in: taskIds } },
+        });
+      }
+
+      // Удаляем audit logs, связанные с проектом
+      await tx.auditLog.deleteMany({
+        where: { projectId: id },
+      });
+
+      // Удаляем задачи
+      await tx.task.deleteMany({
+        where: { projectId: id },
+      });
+
+      // Удаляем приглашения
+      await tx.invitation.deleteMany({
+        where: { projectId: id },
+      });
+
+      // Удаляем членства
+      await tx.membership.deleteMany({
+        where: { projectId: id },
+      });
+
+      // Удаляем сам проект
+      await tx.project.delete({
+        where: { id },
+      });
+    });
   }
 }

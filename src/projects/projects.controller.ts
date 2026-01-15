@@ -22,6 +22,7 @@ import { ProjectsResponseDto } from "./dto/projects-response.dto";
 import { RequireRole } from "@/memberships/guards/require-role.decorator";
 import { MembershipRole } from "@prisma/client";
 import { MembershipsGuard } from "@/memberships/guards/memberships.guard";
+import { ProjectResponseDto } from "./dto/project-response.dto";
 
 @ApiTags("projects")
 @ApiBearerAuth()
@@ -60,9 +61,12 @@ export class ProjectController {
   @ApiResponse({
     status: 200,
     description: "Проект",
-    type: ProjectsResponseDto,
+    type: ProjectResponseDto,
   })
-  findOne(@Param("id") id: string, @CurrentUser() user: JwtUserDto) {
+  findOne(
+    @Param("id") id: string,
+    @CurrentUser() user: JwtUserDto
+  ): Promise<ProjectResponseDto> {
     return this.projectService.findOne(id, user.userId);
   }
 
