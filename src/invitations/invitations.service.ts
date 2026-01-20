@@ -9,10 +9,14 @@ import { CreateInvitationDto } from "./dto/create-invitation.dto";
 import { InvitationsResponseDto } from "./dto/invitations-response.dto";
 import { MembershipRole } from "@prisma/client";
 import { randomUUID } from "crypto";
+import { AuditService } from "@/audit/audit.service";
 
 @Injectable()
 export class InvitationsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly auditService: AuditService
+  ) {}
 
   private toResponseDto(invitation: {
     id: string;
@@ -36,7 +40,8 @@ export class InvitationsService {
 
   async createInvitation(
     createInvitationDto: CreateInvitationDto,
-    projectId: string
+    projectId: string,
+    userId: string
   ) {
     const { email, role } = createInvitationDto;
 
@@ -60,6 +65,16 @@ export class InvitationsService {
         project: true,
       },
     });
+
+    // Логируем создание приглашения
+    await this.auditService.logInviteCreated(
+      invitation.id,
+      userId,
+      projectId,
+      email,
+      role
+    );
+
     return { token };
   }
 
@@ -141,6 +156,14 @@ export class InvitationsService {
         role: invitation.role,
       },
     });
+
+    // Логируем принятие приглашения
+    await this.auditService.logInviteAccepted(
+      invitation.id,
+      userId,
+      invitation.projectId,
+      invitation.role
+    );
 
     // Удалить приглашение после принятия
     await this.prisma.invitation.delete({

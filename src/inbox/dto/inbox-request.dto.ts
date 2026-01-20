@@ -64,5 +64,13 @@ export class InboxRequestDto {
   @ValidateNested()
   @Type(() => TaskCreateDataDto)
   data!: TaskCreateDataDto;
+
+  @ApiPropertyOptional({
+    description: "ID пользователя, создавшего задачу (для Telegram)",
+    example: "clx123...",
+  })
+  @IsString()
+  @IsOptional()
+  userId?: string;
 }
 

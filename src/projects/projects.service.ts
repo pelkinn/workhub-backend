@@ -4,10 +4,14 @@ import { PrismaService } from "../prisma/prisma.service";
 import { MembershipRole } from "@prisma/client";
 import { ProjectsResponseDto } from "./dto/projects-response.dto";
 import { UserResponseDto } from "@/auth/dto/user-response.dto";
+import { AuditService } from "@/audit/audit.service";
 
 @Injectable()
 export class ProjectService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly auditService: AuditService
+  ) {}
 
   async create(createProjectDto: CreateProjectDto, userId: string) {
     const project = await this.prisma.project.create({
@@ -33,6 +37,19 @@ export class ProjectService {
         tasks: true,
       },
     });
+
+    // Логируем создание проекта
+    await this.auditService.logCreate(
+      "Project",
+      project.id,
+      userId,
+      {
+        id: project.id,
+        name: project.name,
+        description: project.description,
+      },
+      project.id
+    );
 
     return project;
   }
@@ -113,7 +130,7 @@ export class ProjectService {
     };
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string, userId: string): Promise<void> {
     // Проверяем существование проекта перед удалением
     const project = await this.prisma.project.findUnique({
       where: { id },
@@ -122,6 +139,13 @@ export class ProjectService {
     if (!project) {
       throw new NotFoundException("Проект не найден");
     }
+
+    // Сохраняем данные проекта для логирования
+    const projectData = {
+      id: project.id,
+      name: project.name,
+      description: project.description,
+    };
 
     // Удаляем проект и все связанные данные в транзакции
     // Порядок важен из-за внешних ключей
@@ -165,5 +189,14 @@ export class ProjectService {
         where: { id },
       });
     });
+
+    // Логируем удаление проекта (после транзакции, чтобы не блокировать удаление)
+    await this.auditService.logDelete(
+      "Project",
+      id,
+      userId,
+      projectData,
+      id
+    );
   }
 }

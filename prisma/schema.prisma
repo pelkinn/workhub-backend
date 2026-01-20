@@ -39,6 +39,7 @@ model Membership {
   role      MembershipRole
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
+  auditLogs AuditLog[]
 }
 
 model Task {
@@ -55,17 +56,19 @@ model Task {
 }
 
 model AuditLog {
-  id        String         @id @default(cuid())
-  action    AuditLogAction
-  data      Json
-  userId    String
-  user      User           @relation(fields: [userId], references: [id])
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  project   Project?       @relation(fields: [projectId], references: [id])
-  projectId String?
-  task      Task?          @relation(fields: [taskId], references: [id])
-  taskId    String?
+  id           String         @id @default(cuid())
+  action       AuditLogAction
+  data         Json
+  userId       String
+  user         User           @relation(fields: [userId], references: [id])
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  project      Project?       @relation(fields: [projectId], references: [id])
+  projectId    String?
+  task         Task?          @relation(fields: [taskId], references: [id])
+  taskId       String?
+  membership   Membership?    @relation(fields: [membershipId], references: [id])
+  membershipId String?
 }
 
 model Invitation {
@@ -83,6 +86,14 @@ enum AuditLogAction {
   CREATE
   UPDATE
   DELETE
+  INVITE_CREATED
+  INVITE_ACCEPTED
+  ROLE_CHANGED
+  MEMBER_REMOVED
+  STATUS_CHANGED
+  DEADLINE_CHANGED
+  TASK_CREATED_VIA_TELEGRAM
+  TASK_CREATED_VIA_WEBHOOK
 }
 
 enum MembershipRole {

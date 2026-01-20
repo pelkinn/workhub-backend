@@ -365,6 +365,7 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
           projectId: state.projectId,
           deadline: state.deadline?.toISOString(),
         },
+        userId: state.userId,
       };
 
       const response = await fetch(`${this.apiUrl}/inbox`, {

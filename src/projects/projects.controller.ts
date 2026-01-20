@@ -86,7 +86,10 @@ export class ProjectController {
     status: 404,
     description: "Проект не найден",
   })
-  delete(@Param("id") id: string): Promise<void> {
-    return this.projectService.delete(id);
+  delete(
+    @Param("id") id: string,
+    @CurrentUser() user: JwtUserDto
+  ): Promise<void> {
+    return this.projectService.delete(id, user.userId);
   }
 }

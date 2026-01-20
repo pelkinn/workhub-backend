@@ -47,11 +47,13 @@ export class InvitationsController {
   })
   createInvitation(
     @Body() createInvitationDto: CreateInvitationDto,
-    @Param("projectId") projectId: string
+    @Param("projectId") projectId: string,
+    @CurrentUser() user: JwtUserDto
   ) {
     return this.invitationsService.createInvitation(
       createInvitationDto,
-      projectId
+      projectId,
+      user.userId
     );
   }
 

@@ -22,6 +22,8 @@ import { JwtAuthGuard } from "@/auth/guards/jwt-auth.guard";
 import { MembershipsGuard } from "@/memberships/guards/memberships.guard";
 import { RequireRole } from "@/memberships/guards/require-role.decorator";
 import { MembershipRole } from "@prisma/client";
+import { CurrentUser } from "@/auth/decorators/current-user.decorator";
+import { JwtUserDto } from "@/auth/dto/jwt-user.dto";
 
 @ApiTags("tasks")
 @ApiBearerAuth()
@@ -60,9 +62,10 @@ export class TasksController {
   })
   create(
     @Param("projectId") projectId: string,
-    @Body() createTaskDto: CreateTaskDto
+    @Body() createTaskDto: CreateTaskDto,
+    @CurrentUser() user: JwtUserDto
   ): Promise<TasksResponseDto> {
-    return this.tasksService.create(projectId, createTaskDto);
+    return this.tasksService.create(projectId, createTaskDto, user.userId);
   }
 
   @UseGuards(MembershipsGuard)
@@ -76,9 +79,10 @@ export class TasksController {
   })
   update(
     @Param("taskId") taskId: string,
-    @Body() updateTaskDto: UpdateTaskDto
+    @Body() updateTaskDto: UpdateTaskDto,
+    @CurrentUser() user: JwtUserDto
   ): Promise<TasksResponseDto> {
-    return this.tasksService.update(taskId, updateTaskDto);
+    return this.tasksService.update(taskId, updateTaskDto, user.userId);
   }
 
   @UseGuards(MembershipsGuard)
@@ -89,7 +93,10 @@ export class TasksController {
     status: 200,
     description: "Задача удалена",
   })
-  delete(@Param("taskId") taskId: string): Promise<void> {
-    return this.tasksService.delete(taskId);
+  delete(
+    @Param("taskId") taskId: string,
+    @CurrentUser() user: JwtUserDto
+  ): Promise<void> {
+    return this.tasksService.delete(taskId, user.userId);
   }
 }

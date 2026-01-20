@@ -10,9 +10,10 @@ import { InvitationsModule } from './invitations/invitations.module';
 import { QueuesModule } from './queues/queues.module';
 import { InboxModule } from './inbox/inbox.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { AuditModule } from './audit/audit.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, ProjectModule, MembershipsModule, TasksModule, InvitationsModule, QueuesModule, InboxModule, NotificationsModule],
+  imports: [PrismaModule, AuthModule, ProjectModule, MembershipsModule, TasksModule, InvitationsModule, QueuesModule, InboxModule, NotificationsModule, AuditModule],
   controllers: [AppController],
   providers: [AppService],
 })
