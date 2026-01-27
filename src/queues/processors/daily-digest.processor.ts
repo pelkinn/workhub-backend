@@ -1,8 +1,8 @@
 import { Processor, WorkerHost } from "@nestjs/bullmq";
 import { Job } from "bullmq";
 import { Logger } from "@nestjs/common";
-import { PrismaService } from "@/prisma/prisma.service";
-import { TelegramService } from "@/notifications/telegram.service";
+import { PrismaService } from "src/prisma/prisma.service";
+import { TelegramService } from "src/notifications/telegram.service";
 
 @Processor("daily-digest-queue")
 export class DailyDigestProcessor extends WorkerHost {

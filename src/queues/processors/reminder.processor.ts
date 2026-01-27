@@ -1,7 +1,7 @@
 import { Processor, WorkerHost } from "@nestjs/bullmq";
 import { Job } from "bullmq";
 import { Logger } from "@nestjs/common";
-import { PrismaService } from "@/prisma/prisma.service";
+import { PrismaService } from "src/prisma/prisma.service";
 
 interface ReminderJobData {
   reminderHours?: number; // За сколько часов до дедлайна отправлять напоминание (по умолчанию 24)

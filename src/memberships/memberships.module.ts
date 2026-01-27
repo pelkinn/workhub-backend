@@ -1,9 +1,9 @@
 import { Module, forwardRef } from "@nestjs/common";
 import { MembershipsController } from "./memberships.controller";
 import { MembershipsService } from "./memberships.service";
-import { PrismaModule } from "@/prisma/prisma.module";
+import { PrismaModule } from "src/prisma/prisma.module";
 import { MembershipsGuard } from "./guards/memberships.guard";
-import { AuditModule } from "@/audit/audit.module";
+import { AuditModule } from "src/audit/audit.module";
 
 @Module({
   imports: [PrismaModule, forwardRef(() => AuditModule)],

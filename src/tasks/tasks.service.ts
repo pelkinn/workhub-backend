@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "@/prisma/prisma.service";
-import { QueuesService } from "@/queues/queues.service";
+import { PrismaService } from "src/prisma/prisma.service";
+import { QueuesService } from "src/queues/queues.service";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { UpdateTaskDto } from "./dto/update-task.dto";
 import { TasksResponseDto } from "./dto/tasks-response.dto";
-import { AuditService } from "@/audit/audit.service";
+import { AuditService } from "src/audit/audit.service";
 
 @Injectable()
 export class TasksService {

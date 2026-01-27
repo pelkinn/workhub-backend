@@ -18,12 +18,12 @@ import { TasksService } from "./tasks.service";
 import { TasksResponseDto } from "./dto/tasks-response.dto";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { UpdateTaskDto } from "./dto/update-task.dto";
-import { JwtAuthGuard } from "@/auth/guards/jwt-auth.guard";
-import { MembershipsGuard } from "@/memberships/guards/memberships.guard";
-import { RequireRole } from "@/memberships/guards/require-role.decorator";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { MembershipsGuard } from "src/memberships/guards/memberships.guard";
+import { RequireRole } from "src/memberships/guards/require-role.decorator";
 import { MembershipRole } from "@prisma/client";
-import { CurrentUser } from "@/auth/decorators/current-user.decorator";
-import { JwtUserDto } from "@/auth/dto/jwt-user.dto";
+import { CurrentUser } from "src/auth/decorators/current-user.decorator";
+import { JwtUserDto } from "src/auth/dto/jwt-user.dto";
 
 @ApiTags("tasks")
 @ApiBearerAuth()

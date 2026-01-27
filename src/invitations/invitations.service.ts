@@ -4,12 +4,12 @@ import {
   ConflictException,
   BadRequestException,
 } from "@nestjs/common";
-import { PrismaService } from "@/prisma/prisma.service";
+import { PrismaService } from "src/prisma/prisma.service";
 import { CreateInvitationDto } from "./dto/create-invitation.dto";
 import { InvitationsResponseDto } from "./dto/invitations-response.dto";
 import { MembershipRole } from "@prisma/client";
 import { randomUUID } from "crypto";
-import { AuditService } from "@/audit/audit.service";
+import { AuditService } from "src/audit/audit.service";
 
 @Injectable()
 export class InvitationsService {

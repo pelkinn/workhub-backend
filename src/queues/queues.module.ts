@@ -5,8 +5,8 @@ import { ReminderProcessor } from "./processors/reminder.processor";
 import { DeadlineReminderProcessor } from "./processors/deadline-reminder.processor";
 import { DailyDigestProcessor } from "./processors/daily-digest.processor";
 import { QueuesService } from "./queues.service";
-import { PrismaModule } from "@/prisma/prisma.module";
-import { NotificationsModule } from "@/notifications/notifications.module";
+import { PrismaModule } from "src/prisma/prisma.module";
+import { NotificationsModule } from "src/notifications/notifications.module";
 
 @Module({
   imports: [

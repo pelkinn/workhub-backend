@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { AuditLogAction } from "@prisma/client";
-import { UserResponseDto } from "@/auth/dto/user-response.dto";
+import { UserResponseDto } from "src/auth/dto/user-response.dto";
 
 export class AuditLogResponseDto {
   @ApiProperty({ description: "ID лога аудита", example: "1" })

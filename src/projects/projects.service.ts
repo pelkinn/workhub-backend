@@ -3,8 +3,8 @@ import { CreateProjectDto } from "./dto/create-project.dto";
 import { PrismaService } from "../prisma/prisma.service";
 import { MembershipRole } from "@prisma/client";
 import { ProjectsResponseDto } from "./dto/projects-response.dto";
-import { UserResponseDto } from "@/auth/dto/user-response.dto";
-import { AuditService } from "@/audit/audit.service";
+import { UserResponseDto } from "src/auth/dto/user-response.dto";
+import { AuditService } from "src/audit/audit.service";
 
 @Injectable()
 export class ProjectService {

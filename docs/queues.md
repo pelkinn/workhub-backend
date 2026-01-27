@@ -278,7 +278,7 @@ REMINDER_HOURS=24              # За сколько часов до дедла�
 
 ```typescript
 // В контроллере или сервисе
-import { QueuesService } from "@/queues/queues.service";
+import { QueuesService } from "src/queues/queues.service";
 
 @Injectable()
 export class MyService {

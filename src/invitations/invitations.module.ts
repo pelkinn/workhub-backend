@@ -1,9 +1,9 @@
 import { Module, forwardRef } from "@nestjs/common";
 import { InvitationsController } from "./invitations.controller";
 import { InvitationsService } from "./invitations.service";
-import { PrismaModule } from "@/prisma/prisma.module";
-import { MembershipsModule } from "@/memberships/memberships.module";
-import { AuditModule } from "@/audit/audit.module";
+import { PrismaModule } from "src/prisma/prisma.module";
+import { MembershipsModule } from "src/memberships/memberships.module";
+import { AuditModule } from "src/audit/audit.module";
 
 @Module({
   imports: [PrismaModule, MembershipsModule, AuditModule],

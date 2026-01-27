@@ -15,13 +15,13 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from "@nestjs/swagger";
-import { JwtAuthGuard } from "@/auth/guards/jwt-auth.guard";
-import { CurrentUser } from "@/auth/decorators/current-user.decorator";
-import { JwtUserDto } from "@/auth/dto/jwt-user.dto";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { CurrentUser } from "src/auth/decorators/current-user.decorator";
+import { JwtUserDto } from "src/auth/dto/jwt-user.dto";
 import { ProjectsResponseDto } from "./dto/projects-response.dto";
-import { RequireRole } from "@/memberships/guards/require-role.decorator";
+import { RequireRole } from "src/memberships/guards/require-role.decorator";
 import { MembershipRole } from "@prisma/client";
-import { MembershipsGuard } from "@/memberships/guards/memberships.guard";
+import { MembershipsGuard } from "src/memberships/guards/memberships.guard";
 import { ProjectResponseDto } from "./dto/project-response.dto";
 
 @ApiTags("projects")

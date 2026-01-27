@@ -7,8 +7,8 @@ import {
 } from "@nestjs/swagger";
 import { AuditService } from "./audit.service";
 import { AuditLogResponseDto } from "./dto/audit-log-response.dto";
-import { JwtAuthGuard } from "@/auth/guards/jwt-auth.guard";
-import { MembershipsGuard } from "@/memberships/guards/memberships.guard";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { MembershipsGuard } from "src/memberships/guards/memberships.guard";
 
 @ApiTags("audit")
 @ApiBearerAuth()

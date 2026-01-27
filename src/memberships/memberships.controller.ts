@@ -7,7 +7,7 @@ import {
   ApiTags,
   ApiBearerAuth,
 } from "@nestjs/swagger";
-import { JwtAuthGuard } from "@/auth/guards/jwt-auth.guard";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { MembershipsGuard } from "./guards/memberships.guard";
 
 @ApiTags("memberships")

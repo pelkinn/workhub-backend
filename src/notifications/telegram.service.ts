@@ -1,7 +1,7 @@
 import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from "@nestjs/common";
 import TelegramBot, { CallbackQuery, Message } from "node-telegram-bot-api";
-import { PrismaService } from "@/prisma/prisma.service";
-import { ProjectService } from "@/projects/projects.service";
+import { PrismaService } from "src/prisma/prisma.service";
+import { ProjectService } from "src/projects/projects.service";
 
 interface BotState {
   step: "project" | "title" | "description" | "deadline";

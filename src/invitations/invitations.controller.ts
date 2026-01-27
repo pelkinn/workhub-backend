@@ -15,12 +15,12 @@ import {
   ApiOperation,
   ApiTags,
 } from "@nestjs/swagger";
-import { JwtAuthGuard } from "@/auth/guards/jwt-auth.guard";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 import { MembershipRole } from "@prisma/client";
-import { RequireRole } from "@/memberships/guards/require-role.decorator";
-import { MembershipsGuard } from "@/memberships/guards/memberships.guard";
-import { CurrentUser } from "@/auth/decorators/current-user.decorator";
-import { JwtUserDto } from "@/auth/dto/jwt-user.dto";
+import { RequireRole } from "src/memberships/guards/require-role.decorator";
+import { MembershipsGuard } from "src/memberships/guards/memberships.guard";
+import { CurrentUser } from "src/auth/decorators/current-user.decorator";
+import { JwtUserDto } from "src/auth/dto/jwt-user.dto";
 import { InvitationsResponseDto } from "./dto/invitations-response.dto";
 
 @ApiTags("invitations")

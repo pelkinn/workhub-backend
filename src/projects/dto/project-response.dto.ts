@@ -1,4 +1,4 @@
-import { UserResponseDto } from "@/auth/dto/user-response.dto";
+import { UserResponseDto } from "src/auth/dto/user-response.dto";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class ProjectResponseDto {

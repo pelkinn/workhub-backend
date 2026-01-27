@@ -1,7 +1,7 @@
 import { Processor, WorkerHost } from "@nestjs/bullmq";
 import { Job } from "bullmq";
 import { Logger } from "@nestjs/common";
-import { TelegramService } from "@/notifications/telegram.service";
+import { TelegramService } from "src/notifications/telegram.service";
 
 interface DeadlineReminderJobData {
   taskId: string;

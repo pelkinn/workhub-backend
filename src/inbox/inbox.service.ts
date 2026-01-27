@@ -1,9 +1,9 @@
 import { Injectable, Logger, BadRequestException } from "@nestjs/common";
-import { PrismaService } from "@/prisma/prisma.service";
-import { TasksService } from "@/tasks/tasks.service";
+import { PrismaService } from "src/prisma/prisma.service";
+import { TasksService } from "src/tasks/tasks.service";
 import { InboxRequestDto, InboxEventType, InboxSource } from "./dto/inbox-request.dto";
-import { CreateTaskDto } from "@/tasks/dto/create-task.dto";
-import { AuditService } from "@/audit/audit.service";
+import { CreateTaskDto } from "src/tasks/dto/create-task.dto";
+import { AuditService } from "src/audit/audit.service";
 import { MembershipRole } from "@prisma/client";
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { MembershipsResponseDto } from "./dto/memberships-response.dto";
-import { PrismaService } from "@/prisma/prisma.service";
-import { AuditService } from "@/audit/audit.service";
+import { PrismaService } from "src/prisma/prisma.service";
+import { AuditService } from "src/audit/audit.service"; 
 import { MembershipRole } from "@prisma/client";
 
 @Injectable()
