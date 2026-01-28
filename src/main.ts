@@ -19,11 +19,11 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
-    })
+    }),
   );
 
   app.enableCors({
-    origin: true,
+    origin: ["http://workhub.team", "https://workhub.team"],
     credentials: true,
   });
 
@@ -33,7 +33,7 @@ async function bootstrap() {
   const testQueue = app.get(getQueueToken("test-queue"));
   const remindersQueue = app.get(getQueueToken("reminders-queue"));
   const deadlineRemindersQueue = app.get(
-    getQueueToken("deadline-reminders-queue")
+    getQueueToken("deadline-reminders-queue"),
   );
   const dailyDigestQueue = app.get(getQueueToken("daily-digest-queue"));
 
